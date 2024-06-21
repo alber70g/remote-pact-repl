@@ -1,0 +1,15 @@
+name: pact-remote-repl
+services:
+  app:
+    image: docker.io/library/remote-pact-repl:0.0.5
+    labels:
+      caddy: 'pact.wieisalbert.nu http://pact.local.co'
+      caddy.reverse_proxy: '{{upstreams 3000}}'
+      net.unraid.docker.icon: 'https://fortunez.com/wp-content/uploads/Kadena-Logo.jpg'
+      net.unraid.docker.webui: 'https://pact.wieisalbert.nu'
+    networks:
+      - proxynetwork
+
+networks:
+  proxynetwork:
+    external: true

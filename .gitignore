@@ -171,3 +171,5 @@ dist
 pact-bin
 
 pnpm-lock.yaml
+lib
+.pact-history

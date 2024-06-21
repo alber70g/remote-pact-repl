@@ -51,8 +51,9 @@ function startServer() {
     console.log('Client connected');
 
     ws.on('message', async (message) => {
+      console.log(message.toString())
       const cmdRes = await executeCommand(
-        message.toString().split('\n').join('\\\n').toString(),
+        message.toString()//.split('\n').join('\\\n').toString()
       );
 
       ws.send(JSON.stringify(cmdRes));
@@ -66,7 +67,7 @@ function startServer() {
   // Listen for SIGTERM signal and close server and WebSocket connections
   process.on('SIGTERM', () => {
     console.log(
-      'Received SIGTERM signal. Closing server and WebSocket connections...',
+      'Received SIGTERM signal. Closing server and WebSocket connections...'
     );
     wss.close(() => {
       console.log('WebSocket connections closed.');
@@ -81,9 +82,10 @@ function startServer() {
 let pactExecutable = './pact-bin/pact';
 
 function executeCommand(pactCode: string) {
+  console.log(pactCode);
   return new Promise((resolve) => {
     exec(
-      `echo "${pactCode.replace(/"/g, '\\"')}" | ${pactExecutable}`,
+      `echo $'${pactCode.replace(/"/g, '\\"')}' | ${pactExecutable}`,
       (error, stdout, stderr) => {
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
@@ -95,7 +97,7 @@ function executeCommand(pactCode: string) {
           delete error.cmd;
         }
         return resolve({ error, stdout, stderr });
-      },
+      }
     );
   });
 }
